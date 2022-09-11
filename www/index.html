@@ -1,0 +1,53 @@
+<html>
+    <head>
+        <title>RFC 6056 Device Tracker Demo</title>
+        <style>
+            body {
+                background-color: #112233;
+                color: white;
+                font-family: 'Courier New', Courier, monospace;
+            }
+            #poc_log {
+                color: white;
+                font-family: 'Courier New', Courier, monospace;
+                display: block;
+                overflow: auto;
+                height: 50%;
+            }
+            h1 {
+                text-align: center;
+            }
+        </style>
+    </head>
+    <body>
+        <h1>RFC 6056 Device Tracker Demo</h1>
+        <br>
+        <table>
+            <tr>
+                <td>Tracker address:</td>
+                <td>
+                    <select id="tracker_address_select" onchange="tracker_address_select_onchange();">
+                        <option value="">Self</option>
+                        <option value="">Custom</option>
+                    </select>
+                    <input id="tracker_address" size="32" placeholder="tracker address (e.g: 6.6.6.6)"/>
+                </td>
+
+            </tr>
+            <tr>
+                <td>Browser:</td>
+                <td><input id="browser" size="32" placeholder="Browser" /></td>
+            </tr>
+            <tr>
+                <td>OS:</td>
+                <td><input id="os" size="32" placeholder="Operating system" /></td>
+            </tr>
+        </table>
+        <button id="do_fingerprint_btn" onclick="do_fingerprint()">Fingerprint me!</button>
+        <br>
+        <br>
+        <span id="poc_log"></span>
+        <script src="platform.js"></script>
+        <script src="poc.js"></script>
+    </body>
+</html>
