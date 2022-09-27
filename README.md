@@ -15,6 +15,8 @@ For full details and analysis of the attack, please refer to our paper "Device T
 Linux switched from Algorithm 3 of RFC 6056 to Algorithm 4 starting from kernel version `5.12-rc1`, by commit 190cc82489f4 ("tcp: change source port randomizarion [sic] at connect() time").
 The issue was [fixed](https://lwn.net/ml/linux-kernel/20220427065233.2075-1-w@1wt.eu/) in versions `5.17.9` (and above) and `5.15.41` (the LTS version that include the vulnerability). 
 
+You can use our tool (availble as a Python script `CVE-2022-32296_tester.py`) to detect whether your Linux machine is vulnerable or not.
+
 ## Which browsers can be used for tracking?
 
 We tested our prototype on Google Chrome v96.0.4664.110 and Mozilla Firefox v96.0. Our implementation works best on Chrome. (Please see the paper for details.)
