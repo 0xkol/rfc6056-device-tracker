@@ -1,3 +1,5 @@
+// Copyright (c) 2022 Moshe Kol, Amit Klein and Yossi Gilad
+// Available under MIT License
 package main
 
 import (

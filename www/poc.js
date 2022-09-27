@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) 2022 Moshe Kol, Amit Klein and Yossi Gilad
+ * Available under MIT License
+*/
 const CLIENT_VERSION_MAJOR = 1;
 const CLIENT_VERSION_MINOR = 1;
 
