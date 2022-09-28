@@ -978,7 +978,8 @@ func main() {
 		flag.Usage()
 		return
 	}
-	log.Printf("poc tracker v%d.%d start (capturing on: %s)\n", TRACKER_VERSION_MAJOR, TRACKER_VERSION_MINOR, *iface)
+	log.Printf("RFC 6056 Device Tracker v%d.%d start (capturing on: %s)\n", TRACKER_VERSION_MAJOR, TRACKER_VERSION_MINOR, *iface)
+	log.Println("For more information: https://github.com/0xkol/rfc6056-device-tracker")
 	t := NewTracker(*iface)
 	log.Fatal(t.ListenAndServe())
 }

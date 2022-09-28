@@ -1,21 +1,21 @@
 # RFC 6056 Device Tracker
 
-This repository contains a prototype implementation of a device tracking technique for Linux-based devices by exploiting Algorithm 4 ("Double-Hash Port Selection Algorithm") of RFC 6056. This algorithm is used in Linux for selecting TCP source ports starting from kernel version `5.12-rc1`.
+This repository contains a prototype implementation of a device tracking technique for Linux-based devices by exploiting Algorithm 4 ("Double-Hash Port Selection Algorithm") of [RFC 6056](https://www.rfc-editor.org/rfc/rfc6056.html). This algorithm is used in Linux for selecting TCP source ports starting from kernel version `5.12-rc1`.
 
 The main idea is that we find hash collisions of the `G()` function when used with loopback TCP connections (`127.0.0.0/8` to `127.0.0.0/8`). These collisions are network independent: they rely only on the key used with `G()`, and as such, the set (or a subset) of `G()` collisions can be used as a device ID, for the lifetime of the key (in Linux, until the device is rebooted). 
 
 By sampling TCP source ports originated from the victim device and generated in an attacker-perscribed manner, we can detect the loopback collisions *remotely*. This allows us to track devices via the browser. Since we only care about the source port, a full TCP connection need not be established -- it suffices that the attacker will capture a TCP SYN packet originated from the victim device and then reset the connection.
 
-This prototype contains a tracking server written in Go and a tracking client written in HTML+JavaScript. The Linux kernel issue is tracked as CVE-2022-32296.
+This prototype contains a tracking server written in Go and a tracking client written in HTML+JavaScript. The Linux kernel issue is tracked as [CVE-2022-32296](https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-32296).
 
-For full details and analysis of the attack, please refer to our paper "Device Tracking via Linux's New TCP Source Port Selection Algorithm" by Moshe Kol, Amit Klein and Yossi Gilad, to be presented on USENIX Security '23.
+For full details and analysis of the attack, please refer to our paper "Device Tracking via Linux's New TCP Source Port Selection Algorithm" by Moshe Kol, Amit Klein and Yossi Gilad, to be presented on USENIX Security '23. An extended version of the paper is available on [arXiv](https://arxiv.org/pdf/2209.12993.pdf).
 
 ## Which Linux kernel versions are affected?
 
 Linux switched from Algorithm 3 of RFC 6056 to Algorithm 4 starting from kernel version `5.12-rc1`, by commit 190cc82489f4 ("tcp: change source port randomizarion [sic] at connect() time").
 The issue was [fixed](https://lwn.net/ml/linux-kernel/20220427065233.2075-1-w@1wt.eu/) in versions `5.17.9` (and above) and `5.15.41` (the LTS version that include the vulnerability). 
 
-You can use our tool (availble as a Python script `CVE-2022-32296_tester.py`) to detect whether your Linux machine is vulnerable or not.
+To detect whether your Linux machine is vulnerable, you can use our tester, `CVE-2022-32296_tester.py`, that is available as a Python 3 script. It does not assume root privileges.
 
 ## Which browsers can be used for tracking?
 
@@ -37,23 +37,23 @@ It's best that you update your Linux kernel to the patched versions: 5.17.9 (and
 
 You can experiment with our prototype with the following steps:
 
-1\. Compile the tracker and run it.
+1\. Compile the tracker server and run it.
 
-Compile the tracker with:
+Compile the tracker server with:
 
 ```
 $ sudo apt update
-$ sudo apt install golang-go libpcap-dev
+$ sudo apt install -y golang-go libpcap-dev
 
-# on the project directory
+# On the project directory
 $ go get github.com/google/gopacket
 $ go get github.com/google/gopacket/pcap
 
-# now you can build
+# Now you can build the tracker
 $ go build -o tracker tracker.go
 ```
 
-Run it with:
+Run the tracker server with:
 
 ```
 sudo ./tracker -iface <capturing-interface>
@@ -61,7 +61,7 @@ sudo ./tracker -iface <capturing-interface>
 
 To run the server on your loopback interface, replace `<capturing-interface>` with `lo`.
 
-2\. Access the tracker via the browser. (Make sure your OS runs on an affected Linux kernel version.)
+2\. Access the tracker via the browser. (Make sure your OS runs on a vulnerable Linux kernel; You can use our tool `CVE-2022-32296_tester.py` to test that.)
 
 3\. Type the tracker IP address on the "Tracker address" field.
 
